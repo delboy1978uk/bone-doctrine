@@ -1,0 +1,19 @@
+{
+  "name": "delboy1978uk/bone-doctrine",
+  "description": "Doctrine functionality for BoneMvcFramework",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Derek Stephen McLean",
+      "email": "delboy1978uk@gmail.com"
+    }
+  ],
+  "require": {
+    "delboy1978uk/common": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "BoneMvc\\Module\\BoneMvcDoctrine\\": "src/"
+    }
+  }
+}
