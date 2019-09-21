@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "delboy1978uk/common": "^3.0"
+    "delboy1978uk/common": "^4.0"
   },
   "autoload": {
     "psr-4": {
