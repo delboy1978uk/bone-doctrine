@@ -4,6 +4,7 @@ namespace BoneMvc\Module\BoneMvcDoctrine;
 
 use Barnacle\Container;
 use Barnacle\RegistrationInterface;
+use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 
@@ -23,6 +24,8 @@ class BoneMvcDoctrinePackage implements RegistrationInterface
 
         $config = Setup::createAnnotationMetadataConfiguration($entityPaths, $isDevMode, null, null, false);
         $config->setProxyDir($c->get('proxy_dir'));
+        $config->setProxyNamespace('App\Proxy');
+        $config->setQueryCacheImpl(new ArrayCache()); /** @todo allow other implementations */
 
         $entityManager = EntityManager::create($credentials, $config);
 
