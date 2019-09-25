@@ -24,7 +24,7 @@ class BoneMvcDoctrinePackage implements RegistrationInterface
 
         $config = Setup::createAnnotationMetadataConfiguration($entityPaths, $isDevMode, null, null, false);
         $config->setProxyDir($c->get('proxy_dir'));
-        $config->setProxyNamespace('App\Proxy');
+        $config->setProxyNamespace('DoctrineProxies');
         $config->setQueryCacheImpl(new ArrayCache()); /** @todo allow other implementations */
 
         $entityManager = EntityManager::create($credentials, $config);
