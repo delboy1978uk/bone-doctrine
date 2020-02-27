@@ -4,6 +4,7 @@ namespace BoneMvc\Module\BoneMvcDoctrine;
 
 use Barnacle\Container;
 use Barnacle\RegistrationInterface;
+use Bone\Mvc\PackageConfigProviderInterface;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
