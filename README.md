@@ -6,12 +6,12 @@ Simply add the Package to Bone's module config
 <?php
 
 // use statements here
-use BoneMvc\Module\BoneMvcDoctrine\BoneMvcDoctrinePackage;
+use Bone\BoneDoctrine\BoneDoctrinePackage;
 
 return [
     'packages' => [
         // packages here...,
-        BoneMvc\Module\BoneMvcDoctrine\BoneMvcDoctrinePackage::class,
+        Bone\BoneDoctrine\BoneDoctrinePackage::class,
     ],
     // ...
 ];

@@ -1,6 +1,6 @@
 {
   "name": "delboy1978uk/bone-doctrine",
-  "description": "Doctrine functionality for BoneMvcFramework",
+  "description": "Doctrine functionality for Bone Framework",
   "license": "MIT",
   "authors": [
     {
@@ -13,7 +13,7 @@
   },
   "autoload": {
     "psr-4": {
-      "BoneMvc\\Module\\BoneMvcDoctrine\\": "src/"
+      "Bone\\BoneDoctrine\\": "src/"
     }
   }
 }

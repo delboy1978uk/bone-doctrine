@@ -1,6 +1,6 @@
 <?php
 
-namespace BoneMvc\Module\BoneMvcDoctrine;
+namespace Bone\BoneDoctrine;
 
 use Barnacle\Container;
 use Barnacle\RegistrationInterface;
@@ -9,7 +9,7 @@ use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 
-class BoneMvcDoctrinePackage implements RegistrationInterface
+class BoneDoctrinePackage implements RegistrationInterface
 {
     /**
      * @param Container $c
