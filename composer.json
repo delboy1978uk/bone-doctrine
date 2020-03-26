@@ -9,7 +9,8 @@
     }
   ],
   "require": {
-    "delboy1978uk/common": "^4.0"
+    "delboy1978uk/common": "^4.0",
+    "delboy1978uk/bone-console": "^1.1"
   },
   "autoload": {
     "psr-4": {

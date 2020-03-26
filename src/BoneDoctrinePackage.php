@@ -4,12 +4,21 @@ namespace Bone\BoneDoctrine;
 
 use Barnacle\Container;
 use Barnacle\RegistrationInterface;
-use Bone\Mvc\PackageConfigProviderInterface;
+use Bone\Console\CommandRegistrationInterface;
+use Del\Common\Command\Migration;
 use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Migrations\Configuration\Configuration;
+use Doctrine\Migrations\Tools\Console\Command\AbstractCommand;
+use Doctrine\Migrations\Tools\Console\Command\DiffCommand;
+use Doctrine\Migrations\Tools\Console\Command\ExecuteCommand;
+use Doctrine\Migrations\Tools\Console\Command\GenerateCommand;
+use Doctrine\Migrations\Tools\Console\Command\StatusCommand;
+use Doctrine\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Setup;
 
-class BoneDoctrinePackage implements RegistrationInterface
+class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationInterface
 {
     /**
      * @param Container $c
@@ -35,18 +44,46 @@ class BoneDoctrinePackage implements RegistrationInterface
     }
 
     /**
-     * @return string
+     * @param Container $container
+     * @return array
      */
-    public function getEntityPath(): string
+    public function registerConsoleCommands(Container $container): array
     {
-        return '';
+        /** @var EntityManager $em $em */
+        $em = $container->get(EntityManager::class);
+        $migrationsDir = 'data/migrations';
+        $configuration = new Configuration($em->getConnection());
+        $configuration->setMigrationsDirectory($migrationsDir);
+        $configuration->setMigrationsNamespace('Migrations');
+        $configuration->setMigrationsTableName('Migration');
+        $configuration->registerMigrationsFromDirectory($migrationsDir);
+
+        $diff = new DiffCommand();
+        $exec = new ExecuteCommand();
+        $gen = new GenerateCommand();
+        $vendormigrate = new Migration();
+        $status = new StatusCommand();
+        $ver = new VersionCommand();
+        $proxy = new GenerateProxiesCommand();
+
+        $diff->setMigrationConfiguration($configuration);
+        $exec->setMigrationConfiguration($configuration);
+        $gen->setMigrationConfiguration($configuration);
+        $vendormigrate->setMigrationConfiguration($configuration);
+        $status->setMigrationConfiguration($configuration);
+        $ver->setMigrationConfiguration($configuration);
+
+        $commands = [$diff, $exec, $gen, $vendormigrate, $status, $ver, $proxy];
+
+        /** @var AbstractCommand $command */
+        foreach ($commands as $command) {
+            $name = $command->getName();
+            $name = str_replace(array('migrations:', 'orm:'), '', $name);
+            $command->setName($name);
+        }
+
+        return $commands;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasEntityPath(): bool
-    {
-        return false;
-    }
+
 }
