@@ -66,6 +66,14 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $ver = new VersionCommand();
         $proxy = new GenerateProxiesCommand();
 
+        $diff->setName('migrant:diff');
+        $exec->setName('migrant:execute');
+        $gen->setName('migrant:generate');
+        $vendormigrate->setName('migrant:migrate');
+        $status->setName('migrant:status');
+        $ver->setName('migrant:version');
+        $proxy->setName('migrant:generate-proxies');
+
         $diff->setMigrationConfiguration($configuration);
         $exec->setMigrationConfiguration($configuration);
         $gen->setMigrationConfiguration($configuration);
