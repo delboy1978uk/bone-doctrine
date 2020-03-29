@@ -5,6 +5,7 @@ namespace Bone\BoneDoctrine;
 use Barnacle\Container;
 use Barnacle\RegistrationInterface;
 use Bone\Console\CommandRegistrationInterface;
+use Bone\Console\ConsoleApplication;
 use Del\Common\Command\Migration;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Migrations\Configuration\Configuration;
@@ -16,7 +17,9 @@ use Doctrine\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Setup;
+use Symfony\Component\Console\Helper\QuestionHelper;
 
 class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationInterface
 {
@@ -30,16 +33,11 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $credentials = $c->get('db');
         $entityPaths = $c->get('entity_paths');
         $isDevMode = false;
-
-
         $config = Setup::createAnnotationMetadataConfiguration($entityPaths, $isDevMode, null, null, false);
         $config->setProxyDir($c->get('proxy_dir'));
         $config->setProxyNamespace('DoctrineProxies');
         $config->setQueryCacheImpl(new ArrayCache()); /** @todo allow other implementations */
-
         $entityManager = EntityManager::create($credentials, $config);
-
-        // The Doctrine Entity Manager
         $c[EntityManager::class] = $entityManager;
     }
 
@@ -51,6 +49,10 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
     {
         /** @var EntityManager $em $em */
         $em = $container->get(EntityManager::class);
+        $helperSet = ConsoleRunner::createHelperSet($em);
+        $helperSet->set(new QuestionHelper(), 'dialog');
+        $app = $container->get(ConsoleApplication::class);
+        $app->setHelperSet($helperSet);
         $migrationsDir = 'data/migrations';
         $configuration = new Configuration($em->getConnection());
         $configuration->setMigrationsDirectory($migrationsDir);
@@ -92,6 +94,4 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
 
         return $commands;
     }
-
-
 }
