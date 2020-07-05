@@ -10,7 +10,9 @@
   ],
   "require": {
     "delboy1978uk/barnacle": "^2.3",
-    "delboy1978uk/bone-console": "^1.1"
+    "delboy1978uk/bone-console": "^1.1",
+    "doctrine/orm": "^2.6.3",
+    "doctrine/migrations": "2.2"
   },
   "autoload": {
     "psr-4": {
