@@ -25,14 +25,14 @@ $entityManager = $c->get(EntityManager::class);
 ``` 
 Of course from there you can check the doctrine docs here https://www.doctrine-project.org/
 ## database migrations
-Bone Framework comes with the `vendor/bin/migrant` command, which is essentially just Doctrine Migrations configured for
+Bone Framework comes with the `vendor/bin/bone` command, which is essentially just Doctrine Migrations configured for
 Bone Framework. Not only will it scan your own entity folder for changes, but also those of any vendor packages you rely
 on. 
 
 Change your DB schema by updating the Doctrine annotations on your entity class, then run:
 ```php
-vendor/bin/migrant diff
-vendor/bin/migrant migrate
+vendor/bin/bone migrant:diff
+vendor/bin/bone migrant:migrate
 ``` 
 https://github.com/delboy1978uk/user is a typical example, look in the entity folder to learn more.
 
