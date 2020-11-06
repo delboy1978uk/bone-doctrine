@@ -6,13 +6,13 @@ use Barnacle\Container;
 use Barnacle\RegistrationInterface;
 use Bone\Console\CommandRegistrationInterface;
 use Bone\Console\ConsoleApplication;
-use Del\Common\Command\Migration;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Migrations\Configuration\Configuration;
 use Doctrine\Migrations\Tools\Console\Command\AbstractCommand;
 use Doctrine\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\Migrations\Tools\Console\Command\GenerateCommand;
+use Doctrine\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\ORM\EntityManager;
@@ -63,7 +63,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $diff = new DiffCommand();
         $exec = new ExecuteCommand();
         $gen = new GenerateCommand();
-        $vendormigrate = new Migration();
+        $migrate = new MigrateCommand();
         $status = new StatusCommand();
         $ver = new VersionCommand();
         $proxy = new GenerateProxiesCommand();
@@ -71,7 +71,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $diff->setName('migrant:diff');
         $exec->setName('migrant:execute');
         $gen->setName('migrant:generate');
-        $vendormigrate->setName('migrant:migrate');
+        $migrate->setName('migrant:migrate');
         $status->setName('migrant:status');
         $ver->setName('migrant:version');
         $proxy->setName('migrant:generate-proxies');
@@ -79,11 +79,11 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $diff->setMigrationConfiguration($configuration);
         $exec->setMigrationConfiguration($configuration);
         $gen->setMigrationConfiguration($configuration);
-        $vendormigrate->setMigrationConfiguration($configuration);
+        $migrate->setMigrationConfiguration($configuration);
         $status->setMigrationConfiguration($configuration);
         $ver->setMigrationConfiguration($configuration);
 
-        $commands = [$diff, $exec, $gen, $vendormigrate, $status, $ver, $proxy];
+        $commands = [$diff, $exec, $gen, $migrate, $status, $ver, $proxy];
 
         /** @var AbstractCommand $command */
         foreach ($commands as $command) {
