@@ -6,7 +6,6 @@ use Barnacle\Container;
 use Barnacle\RegistrationInterface;
 use Bone\Console\CommandRegistrationInterface;
 use Bone\Console\ConsoleApplication;
-use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Migrations\Configuration\Configuration;
 use Doctrine\Migrations\Tools\Console\Command\AbstractCommand;
 use Doctrine\Migrations\Tools\Console\Command\DiffCommand;
@@ -19,7 +18,10 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Setup;
+use Exception;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Doctrine\Common\Cache\Psr6\DoctrineProvider;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationInterface
 {
@@ -30,13 +32,34 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
     public function addToContainer(Container $c)
     {
         /** @var EntityManager $em */
+
+        if (!$c->has('cache_dir')) {
+            throw new Exception('please set cache_dir in your config');
+        }
+
+        if (!$c->has('db')) {
+            throw new Exception('please set db connection details in your config');
+        }
+
+        if (!$c->has('entity_paths')) {
+            throw new Exception('please set entity_paths in your config');
+        }
+
+        if (!$c->has('proxy_dir')) {
+            throw new Exception('please set proxy_dir in your config');
+        }
+
         $credentials = $c->get('db');
         $entityPaths = $c->get('entity_paths');
+        $proxyDir =$c->get('proxy_dir');
+        $cacheDir = $c->get('cache_dir');
         $isDevMode = false;
         $config = Setup::createAnnotationMetadataConfiguration($entityPaths, $isDevMode, null, null, false);
-        $config->setProxyDir($c->get('proxy_dir'));
+        $config->setProxyDir($proxyDir);
         $config->setProxyNamespace('DoctrineProxies');
-        $config->setQueryCacheImpl(new ArrayCache()); /** @todo allow other implementations */
+        $cachePool = new FilesystemAdapter('', 60, $cacheDir);
+        $cache = DoctrineProvider::wrap($cachePool);
+        $config->setQueryCacheImpl($cache);
         $entityManager = EntityManager::create($credentials, $config);
         $c[EntityManager::class] = $entityManager;
     }
