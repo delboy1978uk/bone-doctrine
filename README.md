@@ -18,6 +18,30 @@ return [
 ```
 You should already have a `config/bone-db.php` configuration file, as it comes by standard in the Bone Framework 
 skeleton project. 
+```php
+<?php
+
+return [
+    'db' => [
+        'driver' => 'pdo_mysql',
+        'host' => 'mariadb',
+        'dbname' => 'awesome',
+        'user' => 'dbuser',
+        'password' => '[123456]',
+    ],
+];
+```
+Also you must set paths for your proxy, cache and entity directories. 
+```php
+<?php
+
+return [
+    // other paths here....
+    'proxy_dir' => 'data/proxies/',
+    'cache_dir' => 'data/cache/',
+    'entity_paths' => [],
+];
+```
 ## entity manager
 You can fetch and inject the `Doctrine\ORM\EntityManager` into your classes inside the package registration class:
 ```php
