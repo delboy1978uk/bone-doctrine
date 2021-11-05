@@ -1,5 +1,10 @@
 # bone-doctrine
 Doctrine functionality for Bone MVC Framework
+## installation
+Install via composer
+```
+composer require delboy1978uk/bone-doctrine
+```
 ##Usage
 Simply add the Package to Bone's module config
 ```php
