@@ -14,6 +14,10 @@
     "doctrine/orm": "^2.6.3",
     "doctrine/migrations": "2.2",
     "symfony/cache": "^5.3"
+  }
+  ,
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
   },
   "autoload": {
     "psr-4": {
