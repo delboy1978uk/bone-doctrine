@@ -17,7 +17,7 @@
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest"
-  }
+  },
   "autoload": {
     "psr-4": {
       "Bone\\BoneDoctrine\\": "src/"
