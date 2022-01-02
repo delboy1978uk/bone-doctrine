@@ -54,12 +54,11 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $proxyDir =$c->get('proxy_dir');
         $cacheDir = $c->get('cache_dir');
         $isDevMode = false;
+        $cachePool = new FilesystemAdapter('', 60, $cacheDir);
         $config = Setup::createAnnotationMetadataConfiguration($entityPaths, $isDevMode, null, null, false);
         $config->setProxyDir($proxyDir);
         $config->setProxyNamespace('DoctrineProxies');
-        $cachePool = new FilesystemAdapter('', 60, $cacheDir);
-        $cache = DoctrineProvider::wrap($cachePool);
-        $config->setQueryCacheImpl($cache);
+        $config->setQueryCache($cachePool);
         $entityManager = EntityManager::create($credentials, $config);
         $c[EntityManager::class] = $entityManager;
     }
