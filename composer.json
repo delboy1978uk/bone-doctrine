@@ -13,7 +13,8 @@
         "delboy1978uk/bone-console": "^1.2",
         "doctrine/orm": "^2.10",
         "doctrine/migrations": "^3.3",
-        "symfony/cache": "^6.0"
+        "symfony/cache": "^6.0",
+        "doctrine/annotations": "^1.13"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
