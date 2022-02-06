@@ -1,5 +1,5 @@
 # bone-doctrine
-Doctrine functionality for Bone MVC Framework
+Doctrine functionality for Bone Framework
 ## installation
 Install via composer
 ```
