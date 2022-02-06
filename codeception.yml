@@ -1,4 +1,4 @@
-actor: Tester
+actor_suffix: Tester
 paths:
     tests: tests
     log: tests/_output
@@ -12,3 +12,6 @@ coverage:
     enabled: true
     include:
         - src/*
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed

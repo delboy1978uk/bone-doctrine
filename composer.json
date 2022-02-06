@@ -1,28 +1,34 @@
 {
-  "name": "delboy1978uk/bone-doctrine",
-  "description": "Doctrine functionality for Bone Framework",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Derek Stephen McLean",
-      "email": "delboy1978uk@gmail.com"
+    "name": "delboy1978uk/bone-doctrine",
+    "description": "Doctrine functionality for Bone Framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Derek Stephen McLean",
+            "email": "delboy1978uk@gmail.com"
+        }
+    ],
+    "require": {
+        "delboy1978uk/barnacle": "^2.3",
+        "delboy1978uk/bone-console": "^1.2",
+        "doctrine/orm": "^2.10",
+        "doctrine/migrations": "^3.3",
+        "symfony/cache": "^6.0"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest",
+        "codeception/codeception": "^4.1",
+        "codeception/module-asserts": "^2.0",
+        "codeception/module-phpbrowser": "^1.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bone\\BoneDoctrine\\": "src/"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Bone\\Test\\BoneDoctrine\\": "tests/unit/"
+        }
     }
-  ],
-  "require": {
-    "delboy1978uk/barnacle": "^2.3",
-    "delboy1978uk/bone-console": "^1.2",
-    "doctrine/orm": "^2.10",
-    "doctrine/migrations": "^3.3",
-    "symfony/cache": "^6.0"
-  },
-  "require-dev": {
-    "roave/security-advisories": "dev-latest",
-    "codeception/codeception": "^4.1",
-    "codeception/module-asserts": "^2.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "Bone\\BoneDoctrine\\": "src/"
-    }
-  }
 }
