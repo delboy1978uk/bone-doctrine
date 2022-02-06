@@ -14,7 +14,7 @@ class PackageTest extends Unit
         $container = new Container();
         $container['cache_dir'] = './tests/data';
         $container['proxy_dir'] = './tests/data';
-        $container['entity_paths'] = './tests/data';
+        $container['entity_paths'] = ['./tests/data'];
         $container['db'] = [
             'host' => '127.0.0.1',
             'dbname' => 'awesome',
