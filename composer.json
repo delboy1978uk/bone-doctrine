@@ -20,7 +20,8 @@
         "roave/security-advisories": "dev-latest",
         "codeception/codeception": "^4.1",
         "codeception/module-asserts": "^2.0",
-        "codeception/module-phpbrowser": "^1.0.0"
+        "codeception/module-phpbrowser": "^1.0.0",
+        "delboy1978uk/bone-db": "^1.2"
     },
     "autoload": {
         "psr-4": {
