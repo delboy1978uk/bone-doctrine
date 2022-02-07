@@ -28,6 +28,6 @@ class PackageTest extends Unit
 
         $this->assertTrue($container->has(EntityManager::class));
         $this->assertInstanceOf(EntityManager::class, $container->get(EntityManager::class));
-        $this->assertIsArray($package->registerConsoleCommands($container->get(EntityManager::class)));
+        $this->assertIsArray($package->registerConsoleCommands($container));
     }
 }
