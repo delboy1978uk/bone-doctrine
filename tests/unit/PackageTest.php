@@ -17,13 +17,12 @@ class PackageTest extends Unit
         $container['proxy_dir'] = './tests/data';
         $container['entity_paths'] = ['./tests/data'];
         $container['db'] = [
+            'driver' => 'pdo_mysql',
             'host' => '127.0.0.1',
             'dbname' => 'awesome',
             'user' => 'root',
             'password' => 'root'
         ];
-        $package = new DbPackage();
-        $package->addToContainer($container);
         $package = new BoneDoctrinePackage();
         $package->addToContainer($container);
 
