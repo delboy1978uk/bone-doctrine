@@ -1,4 +1,7 @@
 # bone-doctrine
+[![Latest Stable Version](https://poser.pugx.org/delboy1978uk/bone-doctrine/v/stable)](https://packagist.org/packages/delboy1978uk/bone-doctrine) [![Total Downloads](https://poser.pugx.org/delboy1978uk/bone-doctrine/downloads)](https://packagist.org/packages/delboy1978uk/bone-doctrine) [![License](https://poser.pugx.org/delboy1978uk/bone/license)](https://packagist.org/packages/delboy1978uk/bone)<br />
+![build status](https://github.com/delboy1978uk/bone-doctrine/actions/workflows/master.yml/badge.svg) [![Code Coverage](https://scrutinizer-ci.com/g/delboy1978uk/bone-doctrine/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/delboy1978uk/bone-doctrine/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/delboy1978uk/bone-doctrine/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/delboy1978uk/bone-doctrine/?branch=master)<br />
+
 Doctrine functionality for Bone Framework
 ## installation
 Install via composer
