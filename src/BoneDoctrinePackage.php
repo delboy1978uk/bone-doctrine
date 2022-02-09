@@ -7,12 +7,21 @@ use Barnacle\RegistrationInterface;
 use Bone\Console\CommandRegistrationInterface;
 use Bone\Console\ConsoleApplication;
 use Doctrine\Migrations\Configuration\Configuration;
-use Doctrine\Migrations\Tools\Console\Command\AbstractCommand;
+use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
+use Doctrine\Migrations\Configuration\Migration\ExistingConfiguration;
+use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Metadata\Storage\TableMetadataStorageConfiguration;
+use Doctrine\Migrations\Tools\Console\Command\DoctrineCommand;
 use Doctrine\Migrations\Tools\Console\Command\DiffCommand;
+use Doctrine\Migrations\Tools\Console\Command\DumpSchemaCommand;
 use Doctrine\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\Migrations\Tools\Console\Command\GenerateCommand;
+use Doctrine\Migrations\Tools\Console\Command\LatestCommand;
+use Doctrine\Migrations\Tools\Console\Command\ListCommand;
 use Doctrine\Migrations\Tools\Console\Command\MigrateCommand;
+use Doctrine\Migrations\Tools\Console\Command\RollupCommand;
 use Doctrine\Migrations\Tools\Console\Command\StatusCommand;
+use Doctrine\Migrations\Tools\Console\Command\SyncMetadataCommand;
 use Doctrine\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
@@ -20,7 +29,6 @@ use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Setup;
 use Exception;
 use Symfony\Component\Console\Helper\QuestionHelper;
-use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationInterface
@@ -76,38 +84,45 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $app = $container->get(ConsoleApplication::class);
         $app->setHelperSet($helperSet);
         $migrationsDir = 'data/migrations';
-        $configuration = new Configuration($em->getConnection());
-        $configuration->setMigrationsDirectory($migrationsDir);
-        $configuration->setMigrationsNamespace('Migrations');
-        $configuration->setMigrationsTableName('Migration');
-        $configuration->registerMigrationsFromDirectory($migrationsDir);
+        $meta = new TableMetadataStorageConfiguration();
+        $meta->setTableName('Migration');
+        $configuration = new Configuration();
+        $configuration->addMigrationsDirectory('Migrations', $migrationsDir);
+        $configuration->setMetadataStorageConfiguration($meta);
 
-        $diff = new DiffCommand();
-        $exec = new ExecuteCommand();
-        $gen = new GenerateCommand();
-        $migrate = new MigrateCommand();
-        $status = new StatusCommand();
-        $ver = new VersionCommand();
+        $configLoader = new ExistingConfiguration($configuration);
+        $emLoader = new ExistingEntityManager($em);
+        $dependencyFactory = DependencyFactory::fromEntityManager($configLoader, $emLoader);
+
+        $diff = new DiffCommand($dependencyFactory);
+        $dump = new DumpSchemaCommand($dependencyFactory);
+        $exec = new ExecuteCommand($dependencyFactory);
+        $gen = new GenerateCommand($dependencyFactory);
+        $latest = new LatestCommand($dependencyFactory);
+        $list = new ListCommand($dependencyFactory);
+        $migrate = new MigrateCommand($dependencyFactory);
+        $rollup = new RollupCommand($dependencyFactory);
+        $status = new StatusCommand($dependencyFactory);
+        $sync = new SyncMetadataCommand($dependencyFactory);
+        $ver = new VersionCommand($dependencyFactory);
         $proxy = new GenerateProxiesCommand();
 
         $diff->setName('migrant:diff');
+        $dump->setName('migrant:dump');
         $exec->setName('migrant:execute');
         $gen->setName('migrant:generate');
+        $latest->setName('migrant:latest');
+        $list->setName('migrant:list');
         $migrate->setName('migrant:migrate');
+        $rollup->setName('migrant:rollup');
         $status->setName('migrant:status');
+        $sync->setName('migrant:sync');
         $ver->setName('migrant:version');
         $proxy->setName('migrant:generate-proxies');
 
-        $diff->setMigrationConfiguration($configuration);
-        $exec->setMigrationConfiguration($configuration);
-        $gen->setMigrationConfiguration($configuration);
-        $migrate->setMigrationConfiguration($configuration);
-        $status->setMigrationConfiguration($configuration);
-        $ver->setMigrationConfiguration($configuration);
+        $commands = [$diff, $dump, $exec, $gen, $latest, $list, $migrate, $rollup, $status, $sync, $ver, $proxy];
 
-        $commands = [$diff, $exec, $gen, $migrate, $status, $ver, $proxy];
-
-        /** @var AbstractCommand $command */
+        /** @var DoctrineCommand $command */
         foreach ($commands as $command) {
             $name = $command->getName();
             $name = str_replace(array('migrations:', 'orm:'), '', $name);

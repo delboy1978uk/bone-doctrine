@@ -4,6 +4,7 @@ namespace Bone\Test\BoneDoctrine;
 
 use Barnacle\Container;
 use Bone\BoneDoctrine\BoneDoctrinePackage;
+use Bone\Console\ConsoleApplication;
 use Bone\Console\ConsolePackage;
 use Bone\Db\DbPackage;
 use Codeception\Test\Unit;
@@ -25,8 +26,7 @@ class PackageTest extends Unit
             'user' => 'root',
             'password' => 'root'
         ];
-        $package = new ConsolePackage();
-        $package->addToContainer($container);
+        $container[ConsoleApplication::class] = $this->makeEmpty(ConsoleApplication::class, []);
         $package = new BoneDoctrinePackage();
         $package->addToContainer($container);
 
