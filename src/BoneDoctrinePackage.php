@@ -3,6 +3,7 @@
 namespace Bone\BoneDoctrine;
 
 use Barnacle\Container;
+use Barnacle\Exception\NotFoundException;
 use Barnacle\RegistrationInterface;
 use Bone\Console\CommandRegistrationInterface;
 use Bone\Console\ConsoleApplication;
@@ -27,7 +28,6 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Setup;
-use Exception;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -42,19 +42,19 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         /** @var EntityManager $em */
 
         if (!$c->has('cache_dir')) {
-            throw new Exception('please set cache_dir in your config');
+            throw new NotFoundException('please set cache_dir in your config');
         }
 
         if (!$c->has('db')) {
-            throw new Exception('please set db connection details in your config');
+            throw new NotFoundException('please set db connection details in your config');
         }
 
         if (!$c->has('entity_paths')) {
-            throw new Exception('please set entity_paths in your config');
+            throw new NotFoundException('please set entity_paths in your config');
         }
 
         if (!$c->has('proxy_dir')) {
-            throw new Exception('please set proxy_dir in your config');
+            throw new NotFoundException('please set proxy_dir in your config');
         }
 
         $credentials = $c->get('db');
