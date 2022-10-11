@@ -5,6 +5,7 @@ namespace Bone\BoneDoctrine;
 use Barnacle\Container;
 use Barnacle\Exception\NotFoundException;
 use Barnacle\RegistrationInterface;
+use Bone\BoneDoctrine\Command\LoadFixturesCommand;
 use Bone\Console\CommandRegistrationInterface;
 use Bone\Console\ConsoleApplication;
 use Doctrine\Migrations\Configuration\Configuration;
@@ -106,6 +107,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $sync = new SyncMetadataCommand($dependencyFactory);
         $ver = new VersionCommand($dependencyFactory);
         $proxy = new GenerateProxiesCommand();
+        $fixtures = new LoadFixturesCommand($em, );
 
         $diff->setName('migrant:diff');
         $dump->setName('migrant:dump');
@@ -120,7 +122,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $ver->setName('migrant:version');
         $proxy->setName('migrant:generate-proxies');
 
-        $commands = [$diff, $dump, $exec, $gen, $latest, $list, $migrate, $rollup, $status, $sync, $ver, $proxy];
+        $commands = [$diff, $dump, $exec, $gen, $latest, $list, $migrate, $rollup, $status, $sync, $ver, $proxy, $fixtures];
 
         /** @var DoctrineCommand $command */
         foreach ($commands as $command) {

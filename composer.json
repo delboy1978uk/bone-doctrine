@@ -14,7 +14,8 @@
         "doctrine/orm": "^2.10",
         "doctrine/migrations": "^3.3",
         "symfony/cache": "^6.0",
-        "doctrine/annotations": "^1.13"
+        "doctrine/annotations": "^1.13",
+        "doctrine/data-fixtures": "^1.5"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
