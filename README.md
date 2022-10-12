@@ -67,6 +67,25 @@ vendor/bin/bone migrant:diff
 vendor/bin/bone migrant:migrate
 ``` 
 https://github.com/delboy1978uk/user is a typical example, look in the entity folder to learn more.
+See Doctrine Fixtures documentation for more details.
+## fixtures
+You can run data fixtures using the following command
+```
+vendor/bin/bone migrant:fixtures
+```
+In your Bone Framework config, add a fixtures.php and return classes that run your fixtures. 
+```php
+<?php
+/**
+ * Returns a list of fixtures by classname, in the order of their execution
+ */
 
-Migrations docs https://www.doctrine-project.org/projects/doctrine-migrations/en/2.2/reference/managing-migrations.html
+use Fixtures\LoadUsers;
 
+return [
+    'fixtures' => [
+        LoadUsers::class,
+    ],
+];
+```
+See Doctrine Fixtures documentation for more details.
