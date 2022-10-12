@@ -45,13 +45,14 @@ class LoadFixturesCommand extends Command
         $output->writeln('');
         $loader = new Loader();
 
-        if (\count($this->fixtures)) {
-            $output->writeln('   No fixtures found, exiting.');
+        if (\count($this->fixtures) === 0) {
+            $output->writeln('🤷‍♂️ No fixtures found, exiting.');
 
             return Command::SUCCESS;
         }
 
         foreach ($this->fixtures as $fixture) {
+            $output->writeln('   <info>Executing fixture ' . $fixture . '</info>');
             $instance = new $fixture();
 
             if ($instance instanceof FixtureInterface) {
