@@ -47,19 +47,20 @@ class LoadFixturesCommand extends Command
 
         if (\count($this->fixtures) === 0) {
             $output->writeln('🤷‍♂️ No fixtures found, exiting.');
+            $output->writeln('');
 
             return Command::SUCCESS;
         }
 
         foreach ($this->fixtures as $fixture) {
-            $output->writeln('   <info>Executing fixture ' . $fixture . '</info>');
             $instance = new $fixture();
 
             if ($instance instanceof FixtureInterface) {
-                $output->writeln('   Executing fixture ' . $fixture);
+                $output->writeln('   <info>Executing fixture ' . $fixture . '</info>');
                 $loader->addFixture($instance);
             }
         }
+        $output->writeln('');
 
         $executor = new ORMExecutor($this->entityManager, new ORMPurger());
         $executor->execute($loader->getFixtures(), $input->getOption('purge'));

@@ -107,7 +107,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $sync = new SyncMetadataCommand($dependencyFactory);
         $ver = new VersionCommand($dependencyFactory);
         $proxy = new GenerateProxiesCommand();
-        $fixtures = new LoadFixturesCommand($em, );
+        $fixtures = new LoadFixturesCommand($em, $container->has('fixtures') ? $container->get('fixtures') : []);
 
         $diff->setName('migrant:diff');
         $dump->setName('migrant:dump');
