@@ -10,6 +10,7 @@ use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,7 +31,7 @@ class LoadFixturesCommand extends Command
     {
         $this->setDescription('[fixtures] Loads data fixtures.');
         $this->setHelp('Loads data fixtures.');
-        $this->addOption('purge', 'p', InputOption::VALUE_OPTIONAL, 'Purge the database before seeding', false);
+        $this->addArgument('purge', InputArgument::OPTIONAL, 'Purge the database before seeding', false);
     }
 
     /**
@@ -63,7 +64,7 @@ class LoadFixturesCommand extends Command
         $output->writeln('');
 
         $executor = new ORMExecutor($this->entityManager, new ORMPurger());
-        $executor->execute($loader->getFixtures(), $input->getOption('purge'));
+        $executor->execute($loader->getFixtures(), !$input->getArgument('purge'));
 
         return Command::SUCCESS;
     }
