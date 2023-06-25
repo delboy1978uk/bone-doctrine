@@ -26,9 +26,9 @@ use Doctrine\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\Migrations\Tools\Console\Command\SyncMetadataCommand;
 use Doctrine\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
-use Doctrine\ORM\Tools\Setup;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -64,8 +64,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $cacheDir = $c->get('cache_dir');
         $isDevMode = false;
         $cachePool = new FilesystemAdapter('', 60, $cacheDir);
-        $config = Setup::createAnnotationMetadataConfiguration($entityPaths, $isDevMode, null, null, false);
-        $config->setProxyDir($proxyDir);
+        $config = ORMSetup::createAnnotationMetadataConfiguration($entityPaths, $isDevMode, $proxyDir, $cachePool);
         $config->setProxyNamespace('DoctrineProxies');
         $config->setQueryCache($cachePool);
         $entityManager = EntityManager::create($credentials, $config);
