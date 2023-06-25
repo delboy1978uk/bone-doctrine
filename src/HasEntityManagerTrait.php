@@ -4,6 +4,9 @@ namespace Bone\BoneDoctrine;
 
 use Doctrine\ORM\EntityManager;
 
+/**
+ * @deprecated use Bone\BoneDoctrine\Traits\HasEntityManagerTrait
+ */
 trait HasEntityManagerTrait
 {
     /** @var EntityManager $entityManager */
