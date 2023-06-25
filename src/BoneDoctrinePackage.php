@@ -64,7 +64,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $cacheDir = $c->get('cache_dir');
         $isDevMode = false;
         $cachePool = new FilesystemAdapter('', 60, $cacheDir);
-        $config = ORMSetup::createAnnotationMetadataConfiguration($entityPaths, $isDevMode, $proxyDir, $cachePool);
+        $config = ORMSetup::createAnnotationMetadataConfiguration($entityPaths, $isDevMode, $proxyDir);
         $config->setProxyNamespace('DoctrineProxies');
         $config->setQueryCache($cachePool);
         $entityManager = EntityManager::create($credentials, $config);
