@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "php": ">=7.4",
         "delboy1978uk/barnacle": "^2.3",
         "delboy1978uk/bone-console": "^1.2",
         "doctrine/orm": "^2.10",
