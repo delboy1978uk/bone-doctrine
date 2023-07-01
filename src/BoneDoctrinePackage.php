@@ -27,6 +27,7 @@ use Doctrine\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\Migrations\Tools\Console\Command\SyncMetadataCommand;
 use Doctrine\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
@@ -70,6 +71,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $config->setQueryCache($cachePool);
         $entityManager = EntityManager::create($credentials, $config);
         $c[EntityManager::class] = $entityManager;
+        $c[EntityManagerInterface::class] = $entityManager;
     }
 
     /**
