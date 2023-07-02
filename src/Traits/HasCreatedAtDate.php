@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait HasCreatedAtDate
 {
     /**
-     * @ORM\Column(type="datetimm")
+     * @ORM\Column(type="datetime")
      */
     private ?DateTimeInterface $createdAt;
 

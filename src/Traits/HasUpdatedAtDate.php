@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait HasUpdatedAtDate
 {
     /**
-     * @ORM\Column(type="datetimm", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private ?DateTimeImmutable $updatedAt;
 
