@@ -24,7 +24,7 @@ trait HasCreatedAtDate
     }
 
     /**
-     * @@ORM\PrePersist
+     * @ORM\PrePersist
      */
     public function setCreatedAt(): void
     {

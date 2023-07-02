@@ -23,7 +23,7 @@ trait HasUpdatedAtDate
     }
 
     /**
-     * @@ORM\PreUpdate
+     * @ORM\PreUpdate
      */
     public function setUpdatedAt(): void
     {
