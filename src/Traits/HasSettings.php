@@ -11,7 +11,7 @@ trait HasSettings
     /**
      * @ORM\Column(type="json")
      */
-    private string $settings = '{}';
+    protected string $settings = '{}';
 
     public function getSettings(): array
     {
