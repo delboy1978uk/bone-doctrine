@@ -2,17 +2,10 @@
 
 namespace Bone\BoneDoctrine;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 interface EntityManagerAwareInterface
 {
-    /**
-     * @return EntityManager
-     */
-    public function getEntityManager(): EntityManager;
-
-    /**
-     * @param EntityManager $entityManager
-     */
-    public function setEntityManager(EntityManager $entityManager): void;
+    public function getEntityManager(): EntityManagerInterface;
+    public function setEntityManager(EntityManagerInterface $entityManager): void;
 }
