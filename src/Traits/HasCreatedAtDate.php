@@ -6,6 +6,7 @@ namespace Bone\BoneDoctrine\Traits;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +29,6 @@ trait HasCreatedAtDate
      */
     public function setCreatedAt(): void
     {
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable('now', new DateTimeZone('UTC'));
     }
 }

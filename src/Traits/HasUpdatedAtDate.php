@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bone\BoneDoctrine\Traits;
 
 use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,6 +28,6 @@ trait HasUpdatedAtDate
      */
     public function setUpdatedAt(): void
     {
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable('now', new DateTimeZone('UTC'));
     }
 }
