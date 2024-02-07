@@ -7,7 +7,7 @@ build:
                 override:
                     - php-scrutinizer-run
     environment:
-        php: 8.0.14
+        php: 8.2.15
 filter:
     paths:
         - src/*
