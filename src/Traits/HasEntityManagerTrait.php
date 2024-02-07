@@ -6,20 +6,13 @@ use Doctrine\ORM\EntityManagerInterface;
 
 trait HasEntityManagerTrait
 {
-    /** @var EntityManagerInterface $entityManager */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @return EntityManagerInterface
-     */
     public function getEntityManager(): EntityManagerInterface
     {
         return $this->entityManager;
     }
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;

@@ -9,14 +9,10 @@ use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\HasLifecycleCallbacks
- */
+#[ORM\HasLifecycleCallbacks]
 trait HasCreatedAtDate
 {
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $createdAt;
 
     public function getCreatedAt(): ?DateTimeInterface
@@ -24,9 +20,7 @@ trait HasCreatedAtDate
         return $this->createdAt;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function setCreatedAt(): void
     {
         $this->createdAt = new DateTimeImmutable('now', new DateTimeZone('UTC'));
