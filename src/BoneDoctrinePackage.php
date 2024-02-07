@@ -9,6 +9,8 @@ use Bone\BoneDoctrine\Command\LoadFixturesCommand;
 use Bone\Console\CommandRegistrationInterface;
 use Bone\Console\ConsoleApplication;
 use Doctrine\Common\Cache\Psr6\DoctrineProvider;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\Migrations\Configuration\Configuration;
 use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
 use Doctrine\Migrations\Configuration\Migration\ExistingConfiguration;
@@ -66,10 +68,12 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $cacheDir = $c->get('cache_dir');
         $isDevMode = $c->has('devMode') ? $c->get('devMode') : false;
         $cachePool = new FilesystemAdapter('', 60, $cacheDir);
-        $config = ORMSetup::createAnnotationMetadataConfiguration($entityPaths, $isDevMode, $proxyDir, $cachePool);
+        $config = ORMSetup::createAttributeMetadataConfiguration($entityPaths, $isDevMode, $proxyDir, $cachePool);
         $config->setProxyNamespace('DoctrineProxies');
         $config->setQueryCache($cachePool);
-        $entityManager = EntityManager::create($credentials, $config);
+        $connection = DriverManager::getConnection($credentials, $config);
+        $entityManager = new EntityManager($connection, $config);
+
         $c[EntityManager::class] = $entityManager;
         $c[EntityManagerInterface::class] = $entityManager;
     }
