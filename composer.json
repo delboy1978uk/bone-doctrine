@@ -11,12 +11,11 @@
     "require": {
         "php": "^8.1",
         "delboy1978uk/barnacle": "^2.3",
-        "delboy1978uk/bone-console": "^1.2",
-        "doctrine/orm": "^2.10",
-        "doctrine/migrations": "^3.3",
-        "symfony/cache": "^6.3",
-        "doctrine/annotations": "^1.13",
-        "doctrine/data-fixtures": "^1.5"
+        "delboy1978uk/bone-console": "^1.4",
+        "doctrine/orm": "^3.1",
+        "doctrine/migrations": "^3.7",
+        "symfony/cache": "^7.0",
+        "doctrine/data-fixtures": "^1.7"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",

@@ -10,7 +10,7 @@ trait HasLocationCoordinates
 {
     #[ORM\Column(type: 'float', precision: 17, scale: 15, nullable: true)]
     private float $longitude = 0.0;
-    
+
     #[ORM\Column(type: 'float', precision: 17, scale: 15, nullable: true)]
     private float $latitude = 0.0;
 
