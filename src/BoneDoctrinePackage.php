@@ -33,6 +33,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -109,7 +110,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $status = new StatusCommand($dependencyFactory);
         $sync = new SyncMetadataCommand($dependencyFactory);
         $ver = new VersionCommand($dependencyFactory);
-        $proxy = new GenerateProxiesCommand($emLoader);
+        $proxy = new GenerateProxiesCommand(new SingleManagerProvider($em));
         $fixtures = new LoadFixturesCommand($em, $container->has('fixtures') ? $container->get('fixtures') : []);
 
         $diff->setName('migrant:diff');
