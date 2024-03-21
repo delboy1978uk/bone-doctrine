@@ -86,8 +86,6 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
     {
         /** @var EntityManager $em $em */
         $em = $container->get(EntityManager::class);
-        $helperSet = ConsoleRunner::createHelperSet($em);
-        $helperSet->set(new QuestionHelper(), 'dialog');
         $app = $container->get(ConsoleApplication::class);
         $app->setHelperSet($helperSet);
         $migrationsDir = 'data/migrations';
