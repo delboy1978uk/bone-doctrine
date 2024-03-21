@@ -9,6 +9,8 @@ use Bone\BoneDoctrine\Command\LoadFixturesCommand;
 use Bone\Console\CommandRegistrationInterface;
 use Bone\Console\ConsoleApplication;
 use Doctrine\Common\Cache\Psr6\DoctrineProvider;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\Migrations\Configuration\Configuration;
 use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
 use Doctrine\Migrations\Configuration\Migration\ExistingConfiguration;
@@ -31,6 +33,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -66,10 +69,12 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $cacheDir = $c->get('cache_dir');
         $isDevMode = $c->has('devMode') ? $c->get('devMode') : false;
         $cachePool = new FilesystemAdapter('', 60, $cacheDir);
-        $config = ORMSetup::createAnnotationMetadataConfiguration($entityPaths, $isDevMode, $proxyDir, $cachePool);
+        $config = ORMSetup::createAttributeMetadataConfiguration($entityPaths, $isDevMode, $proxyDir, $cachePool);
         $config->setProxyNamespace('DoctrineProxies');
         $config->setQueryCache($cachePool);
-        $entityManager = EntityManager::create($credentials, $config);
+        $connection = DriverManager::getConnection($credentials, $config);
+        $entityManager = new EntityManager($connection, $config);
+
         $c[EntityManager::class] = $entityManager;
         $c[EntityManagerInterface::class] = $entityManager;
     }
@@ -82,10 +87,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
     {
         /** @var EntityManager $em $em */
         $em = $container->get(EntityManager::class);
-        $helperSet = ConsoleRunner::createHelperSet($em);
-        $helperSet->set(new QuestionHelper(), 'dialog');
         $app = $container->get(ConsoleApplication::class);
-        $app->setHelperSet($helperSet);
         $migrationsDir = 'data/migrations';
         $meta = new TableMetadataStorageConfiguration();
         $meta->setTableName('Migration');
@@ -108,7 +110,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $status = new StatusCommand($dependencyFactory);
         $sync = new SyncMetadataCommand($dependencyFactory);
         $ver = new VersionCommand($dependencyFactory);
-        $proxy = new GenerateProxiesCommand();
+        $proxy = new GenerateProxiesCommand(new SingleManagerProvider($em));
         $fixtures = new LoadFixturesCommand($em, $container->has('fixtures') ? $container->get('fixtures') : []);
 
         $diff->setName('migrant:diff');

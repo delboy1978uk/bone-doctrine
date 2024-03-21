@@ -8,11 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait HasId
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
     private int $id;
 
     public function getId(): int

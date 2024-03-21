@@ -8,9 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait HasSettings
 {
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     protected string $settings = '{}';
 
     public function getSettings(): array

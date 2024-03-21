@@ -8,9 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait HasEmail
 {
-    /**
-     * @ORM\Column(type="string",length=50)
-     */
+    #[ORM\Column(type: 'string', length: 50)]
     private string $email = '';
 
     public function getEmail(): string

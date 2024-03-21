@@ -2,13 +2,7 @@
 
 namespace Bone\Test\BoneDoctrine;
 
-use Barnacle\Container;
-use Barnacle\Exception\NotFoundException;
-use Bone\BoneDoctrine\BoneDoctrinePackage;
-use Bone\BoneDoctrine\HasEntityManagerTrait;
-use Bone\Console\ConsoleApplication;
-use Bone\Console\ConsolePackage;
-use Bone\Db\DbPackage;
+use Bone\BoneDoctrine\Traits\HasEntityManagerTrait;
 use Codeception\Test\Unit;
 use Doctrine\ORM\EntityManager;
 
