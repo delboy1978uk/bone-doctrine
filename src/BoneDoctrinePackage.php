@@ -87,7 +87,6 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         /** @var EntityManager $em $em */
         $em = $container->get(EntityManager::class);
         $app = $container->get(ConsoleApplication::class);
-        $app->setHelperSet($helperSet);
         $migrationsDir = 'data/migrations';
         $meta = new TableMetadataStorageConfiguration();
         $meta->setTableName('Migration');
