@@ -27,7 +27,7 @@ class LoadFixturesCommand extends Command
         $this->fixtures = $fixtures;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('[fixtures] Loads data fixtures.');
         $this->setHelp('Loads data fixtures.');
@@ -38,7 +38,7 @@ class LoadFixturesCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('');
         $output->writeln('💀 Bone Framework database fixtures');

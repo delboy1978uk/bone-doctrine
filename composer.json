@@ -19,9 +19,9 @@
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
-        "codeception/codeception": "^4.1",
-        "codeception/module-asserts": "^2.0",
-        "codeception/module-phpbrowser": "^1.0.0"
+        "codeception/codeception": "^5.1",
+        "codeception/module-asserts": "^3.0",
+        "codeception/module-phpbrowser": "^3.0"
     },
     "autoload": {
         "psr-4": {
