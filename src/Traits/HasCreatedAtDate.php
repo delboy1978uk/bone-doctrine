@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 trait HasCreatedAtDate
 {
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private ?DateTimeInterface $createdAt;
 
     public function getCreatedAt(): ?DateTimeInterface
