@@ -3,6 +3,7 @@
 namespace Bone\Test\BoneDoctrine\Command;
 
 use Bone\BoneDoctrine\Traits\HasCreatedAtDate;
+use Bone\BoneDoctrine\Traits\HasDeletedAtDate;
 use Bone\BoneDoctrine\Traits\HasEmail;
 use Bone\BoneDoctrine\Traits\HasEntityManagerTrait;
 use Bone\BoneDoctrine\Traits\HasExpiryDate;
@@ -23,6 +24,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class FakeClass
 {
     use HasCreatedAtDate;
+    use HasDeletedAtDate;
     use HasEmail;
     use HasEntityManagerTrait;
     use HasId;
@@ -56,6 +58,7 @@ class TraitsTest extends Unit
         $class->setEntityManager($entityManager);
         $class->setCreatedAt();
         $class->setUpdatedAt();
+        $class->setDeletedAt();
         $class->setExpiryDate(new DateTime());
         $class->setSettings([
             'xxx' => 'yyy',
@@ -64,6 +67,7 @@ class TraitsTest extends Unit
         self::assertInstanceOf(\DateTimeInterface::class, $class->getCreatedAt());
         self::assertInstanceOf(\DateTimeInterface::class, $class->getUpdatedAt());
         self::assertInstanceOf(\DateTimeInterface::class, $class->getExpiryDate());
+        self::assertInstanceOf(\DateTimeInterface::class, $class->getDeletedAt());
         self::assertInstanceOf(EntityManagerInterface::class, $class->getEntityManager());
         self::assertEquals(2014, $class->getId());
         self::assertEquals('man@work.com', $class->getEmail());
