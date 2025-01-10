@@ -32,6 +32,12 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
+use Doctrine\ORM\Tools\Console\Command\InfoCommand;
+use Doctrine\ORM\Tools\Console\Command\MappingDescribeCommand;
+use Doctrine\ORM\Tools\Console\Command\RunDqlCommand;
+use Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand;
+use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand;
+use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -98,6 +104,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $configLoader = new ExistingConfiguration($configuration);
         $emLoader = new ExistingEntityManager($em);
         $dependencyFactory = DependencyFactory::fromEntityManager($configLoader, $emLoader);
+        $emProvider = new SingleManagerProvider($em);
 
         $diff = new DiffCommand($dependencyFactory);
         $dump = new DumpSchemaCommand($dependencyFactory);
@@ -110,23 +117,36 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $status = new StatusCommand($dependencyFactory);
         $sync = new SyncMetadataCommand($dependencyFactory);
         $ver = new VersionCommand($dependencyFactory);
-        $proxy = new GenerateProxiesCommand(new SingleManagerProvider($em));
+        $dropDb = new DropCommand($emProvider);
+        $createDb = new CreateCommand($emProvider);
+        $validate = new ValidateSchemaCommand($emProvider);
+        $proxy = new GenerateProxiesCommand($emProvider);
+        $info = new InfoCommand($emProvider);
+        $mappingDescribe = new MappingDescribeCommand($emProvider);
+        $runDql = new RunDqlCommand($emProvider);
         $fixtures = new LoadFixturesCommand($em, $container->has('fixtures') ? $container->get('fixtures') : []);
 
         $diff->setName('migrant:diff');
+        $createDb->setName('migrant:create');
+        $dropDb->setName('migrant:drop');
         $dump->setName('migrant:dump');
         $exec->setName('migrant:execute');
         $gen->setName('migrant:generate');
+        $info->setName('migrant:info');
         $latest->setName('migrant:latest');
         $list->setName('migrant:list');
+        $mappingDescribe->setName('migrant:describe');
         $migrate->setName('migrant:migrate');
+        $runDql->setName('migrant:run-dql');
         $rollup->setName('migrant:rollup');
         $status->setName('migrant:status');
         $sync->setName('migrant:sync');
+        $validate->setName('migrant:validate');
         $ver->setName('migrant:version');
         $proxy->setName('migrant:generate-proxies');
 
-        $commands = [$diff, $dump, $exec, $gen, $latest, $list, $migrate, $rollup, $status, $sync, $ver, $proxy, $fixtures];
+
+        $commands = [$createDb, $dropDb, $diff, $dump, $exec, $gen, $info, $latest, $list, $mappingDescribe, $migrate, $rollup, $runDql, $status, $sync, $validate, $ver, $proxy, $fixtures];
 
         /** @var DoctrineCommand $command */
         foreach ($commands as $command) {
