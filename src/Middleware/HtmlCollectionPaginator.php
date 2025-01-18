@@ -32,10 +32,16 @@ abstract class HtmlCollectionPaginator implements MiddlewareInterface
         $orderByCriteria = $this->getWhereCriteria();
         $requestAttributeName = $this->getRequestAttributeName();
         $entities = $this->entityManager->getRepository($entityClass)->findBy($whereCriteria, $orderByCriteria, $limit, $offset);
+        $totalRecords = $this->entityManager->getRepository($entityClass)->count($whereCriteria);
+        $uri = $request->getUri();
+        $url = $uri->getScheme() . '://' . $uri->getHost() . $uri->getPath() . '?page=:page';
+        $paginator = new HtmlPaginatorRenderer($page, $url, $totalRecords, $limit);
+
         $request = $request->withAttribute($requestAttributeName, $entities);
         $request = $request->withAttribute('page', $page);
         $request = $request->withAttribute('totalPages', $page);
         $request = $request->withAttribute('totalRecords', $page);
+        $request = $request->withAttribute('paginator', $paginator);
 
         return $handler->handle($request);
     }
