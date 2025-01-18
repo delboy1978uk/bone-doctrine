@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-abstract class CollectionPaginator implements MiddlewareInterface
+abstract class HtmlCollectionPaginator implements MiddlewareInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
