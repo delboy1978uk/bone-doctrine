@@ -15,7 +15,7 @@ trait HasUpdatedAtDate
     #[ORM\Column(type: 'datetime_immutable', nullable:true)]
     private ?DateTimeImmutable $updatedAt = null;
 
-    public function getUpdatedAt(): DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }

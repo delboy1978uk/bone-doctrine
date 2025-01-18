@@ -13,9 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 trait HasCreatedAtDate
 {
     #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeInterface $createdAt = null;
+    private DateTimeInterface $createdAt;
 
-    public function getCreatedAt(): ?DateTimeInterface
+    public function getCreatedAt(): DateTimeInterface
     {
         return $this->createdAt;
     }

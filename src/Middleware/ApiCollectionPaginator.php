@@ -4,24 +4,17 @@ declare(strict_types=1);
 
 namespace Bone\BoneDoctrine\Middleware;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use JMS\Serializer\SerializerInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-
 abstract class ApiCollectionPaginator implements MiddlewareInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private SerializerInterface $serializer,
     ) {}
 
     abstract public function getEntityClass(): string;
@@ -73,13 +66,9 @@ abstract class ApiCollectionPaginator implements MiddlewareInterface
 
         $hal['_embedded'] = [];
 
-        $encoders = [new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-        $serializer = new Serializer($normalizers, $encoders);
-
-//        foreach ($entities as $entity) {
-            $hal['_embedded'][] = $serializer->serialize($entities, 'json'); //$entity->toArray();
-//        }
+        foreach ($entities as $entity) {
+            $hal['_embedded'][] = $entity->toArray();
+        }
 
         $hal['totalPages'] = $totalPages;
         $hal['totalRecords'] = $totalRecords;
