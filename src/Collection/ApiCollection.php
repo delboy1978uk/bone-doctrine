@@ -13,7 +13,7 @@ class ApiCollection extends ArrayCollection
     private int $totalPages;
     private UriInterface $uri;
 
-    public function __construct(array $elements = [], UriInterface $uri, int $page, int $totalPages)
+    public function __construct(array $elements = [], UriInterface $uri, int $page, int $totalPages, int  $totalRecords)
     {
         parent::__construct($elements);
         $this->page = $page;

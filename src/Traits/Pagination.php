@@ -7,14 +7,13 @@ namespace Bone\BoneDoctrine\Traits;
 use Bone\Application;
 use Bone\BoneDoctrine\Collection\ApiCollection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ObjectRepository;
+use Psr\Http\Message\ServerRequestInterface;
 
 trait Pagination
 {
-    public function paginate(ObjectRepository $repository,  array $where = [], $orderBy = []): Collection
+    public function paginate(ServerRequestInterface $request, ObjectRepository $repository,  array $where = [], $orderBy = []): ApiCollection
     {
-        $request = Application::ahoy()->getGlobalRequest();
         $params = $request->getQueryParams();
         $page = isset($params['page']) ? (int) $params['page'] : 1;
         $limit = isset($params['limit']) ? (int) $params['limit'] : 25;
@@ -24,6 +23,6 @@ trait Pagination
         $totalPages = (int) ceil($totalRecords / $limit);
         $uri = $request->getUri();
 
-        return new ApiCollection($collection, $uri, $page, $totalPages);
+        return new ApiCollection($collection, $uri, $page, $totalPages, $totalRecords);
     }
 }
