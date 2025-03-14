@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bone\App\Http;
+namespace Bone\BoneDoctrine\Traits;
 
 use Bone\Application;
 use Doctrine\Common\Collections\ArrayCollection;
