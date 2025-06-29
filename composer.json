@@ -13,17 +13,17 @@
         "boneframework/contracts": "^1.1",
         "delboy1978uk/barnacle": "^2.3",
         "delboy1978uk/bone-console": "^1.4",
-        "doctrine/orm": "^3.1",
-        "doctrine/migrations": "^3.7",
-        "symfony/cache": "^7.0",
+        "delboy1978uk/form": "^v2.6",
         "doctrine/data-fixtures": "^1.7",
-        "league/csv": "^9.0"
+        "doctrine/migrations": "^3.7",
+        "doctrine/orm": "^3.1",
+        "league/csv": "^9.0",
+        "psr/http-message": "^2.0",
+        "symfony/cache": "^7.0"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
-        "codeception/codeception": "^5.1",
-        "codeception/module-asserts": "^3.0",
-        "codeception/module-phpbrowser": "^3.0"
+        "delboy1978uk/dev-tools": "^v1.1",
     },
     "autoload": {
         "psr-4": {
