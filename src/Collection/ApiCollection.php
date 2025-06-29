@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Bone\BoneDoctrine\Collection;
 
+use Bone\Contracts\Collection\ApiCollectionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Psr\Http\Message\UriInterface;
 
-class ApiCollection extends ArrayCollection
+class ApiCollection extends ArrayCollection implements ApiCollectionInterface
 {
     private int $page;
     private int $totalPages;
     private UriInterface $uri;
 
-    public function __construct(array $elements = [], UriInterface $uri, int $page, int $totalPages, int  $totalRecords)
+    public function __construct(array $elements, UriInterface $uri, int $page, int $totalPages, int  $totalRecords)
     {
         parent::__construct($elements);
         $this->page = $page;
