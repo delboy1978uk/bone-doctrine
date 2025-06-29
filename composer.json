@@ -23,7 +23,7 @@
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
-        "delboy1978uk/dev-tools": "^v1.1",
+        "delboy1978uk/dev-tools": "^v1.1"
     },
     "autoload": {
         "psr-4": {
