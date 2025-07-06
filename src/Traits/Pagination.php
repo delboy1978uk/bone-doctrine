@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Bone\BoneDoctrine\Traits;
 
-use Bone\Application;
 use Bone\BoneDoctrine\Collection\ApiCollection;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectRepository;
 use Psr\Http\Message\ServerRequestInterface;
 

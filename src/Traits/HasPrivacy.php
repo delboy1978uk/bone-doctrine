@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Bone\BoneDoctrine\Traits;
 
+use Del\Form\Field\Attributes\Field;
 use Doctrine\ORM\Mapping as ORM;
 
 trait HasPrivacy
 {
     #[ORM\Column(type: 'boolean')]
+    #[Field('checkbox')]
     private bool $private = false;
 
     public function isPrivate(): bool

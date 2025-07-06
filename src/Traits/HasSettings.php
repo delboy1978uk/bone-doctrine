@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bone\BoneDoctrine\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
+use function json_decode;
 
 trait HasSettings
 {
@@ -13,7 +14,7 @@ trait HasSettings
 
     public function getSettings(): array
     {
-        return \json_decode($this->settings, true);
+        return json_decode($this->settings, true);
     }
 
     public function setSettings(array $settings): void
