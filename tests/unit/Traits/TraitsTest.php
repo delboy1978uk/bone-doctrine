@@ -51,7 +51,7 @@ class TraitsTest extends Unit
         $class->setUrl('https://cia.gov');
         $class->setUrlSlug('some-slug');
         $class->setTelephone('00441415568765');
-        $class->setImagePath('/path/to/image');
+        $class->setImage('/path/to/image');
         $class->setName('mr man');
         $class->setPrivate(true);
         $class->setVisible(true);
@@ -71,6 +71,7 @@ class TraitsTest extends Unit
         self::assertInstanceOf(EntityManagerInterface::class, $class->getEntityManager());
         self::assertEquals(2014, $class->getId());
         self::assertEquals('man@work.com', $class->getEmail());
+        self::assertEquals('/path/to/image', $class->getImage());
         self::assertEquals('https://cia.gov', $class->getUrl());
         self::assertEquals('some-slug', $class->getUrlSlug());
         self::assertEquals('mr man', $class->getName());
