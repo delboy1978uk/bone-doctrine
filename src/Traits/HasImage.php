@@ -11,15 +11,15 @@ trait HasImage
 {
     #[ORM\Column()]
     #[Field('string')]
-    private string $imagePath = '';
+    private string $image = '';
 
-    public function getImagePath(): string
+    public function getImage(): string
     {
-        return $this->imagePath;
+        return $this->image;
     }
 
-    public function setImagePath(string $imagePath): void
+    public function setImage(string $imagePath): void
     {
-        $this->imagePath = $imagePath;
+        $this->image = $imagePath;
     }
 }
