@@ -12,6 +12,7 @@ class ApiCollection extends ArrayCollection implements ApiCollectionInterface
 {
     private int $page;
     private int $totalPages;
+    private int $totalRecords;
     private UriInterface $uri;
 
     public function __construct(array $elements, UriInterface $uri, int $page, int $totalPages, int  $totalRecords)
@@ -19,6 +20,7 @@ class ApiCollection extends ArrayCollection implements ApiCollectionInterface
         parent::__construct($elements);
         $this->page = $page;
         $this->totalPages = $totalPages;
+        $this->totalRecords = $totalRecords;
         $this->uri = $uri;
     }
 
@@ -35,5 +37,10 @@ class ApiCollection extends ArrayCollection implements ApiCollectionInterface
     public function getPage(): int
     {
         return $this->page;
+    }
+
+    public function getTotalRecords(): int
+    {
+        return $this->totalRecords;
     }
 }
