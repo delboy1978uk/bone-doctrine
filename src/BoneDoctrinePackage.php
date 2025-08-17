@@ -8,6 +8,7 @@ use Barnacle\RegistrationInterface;
 use Bone\BoneDoctrine\Command\LoadFixturesCommand;
 use Bone\Console\CommandRegistrationInterface;
 use Bone\Console\ConsoleApplication;
+use Bone\View\ViewRegistrationInterface;
 use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
@@ -38,17 +39,11 @@ use Doctrine\ORM\Tools\Console\Command\RunDqlCommand;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand;
 use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
-use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationInterface
+class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationInterface, ViewRegistrationInterface
 {
-    /**
-     * @param Container $c
-     * @throws \Doctrine\ORM\ORMException
-     */
     public function addToContainer(Container $c)
     {
         /** @var EntityManager $em */
@@ -156,5 +151,17 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         }
 
         return $commands;
+    }
+
+    public function addViews(): array
+    {
+        return [
+            'admin' => __DIR__ . '/View/admin',
+        ];
+    }
+
+    public function addViewExtensions(Container $c): array
+    {
+        return [];
     }
 }

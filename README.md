@@ -89,3 +89,135 @@ return [
 ];
 ```
 See Doctrine Fixtures documentation for more details.
+## admin panel
+You can create a quick CRUD admin panel for your entities. Example:
+```php
+
+use Bone\BoneDoctrine\Attributes\Cast;
+use Bone\BoneDoctrine\Attributes\Visibility;
+use Bone\BoneDoctrine\Traits\HasId;
+use Del\Form\Field\Attributes\Field;
+use Del\Form\Traits\HasFormFields;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
+class SomeEntity
+{
+    use HasFormFields;
+    use HasId;
+
+    #[ORM\Column(type: 'float')]
+    #[Field('float|required|max:6')]    // form field validator rules
+    #[Visibility('all')                 // visible on index,create,edit,delete
+    #[Cast(prefix: '€')]                // prefix or suffix  table values
+    private ?float $price = null;
+
+    // etc
+}
+```
+Now that the entity is annotated, create a service, and an admin controller as follows:
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Bone\App\Service;
+
+use Bone\App\Entity\Test;
+use Bone\BoneDoctrine\Service\RestService;
+
+class SomeEntityService extends RestService
+{
+    public function getEntityClass(): string
+    {
+        return SomeEntity::class;
+    }
+}
+```
+The Admin controller looks like  this:
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Bone\App\Http\Controller;
+
+use Bone\App\Entity\SomeEntity;
+use Bone\App\Service\SomeEntityService;
+use Bone\BoneDoctrine\Http\Controller\AdminController;
+
+class TestAdminController extends AdminController
+{
+    public function getEntityClass(): string
+    {
+        return SomeEntity::class;
+    }
+
+    public function getServiceClass(): string
+    {
+        return SomeEntityService::class;
+    }
+}
+```
+Finally add the routes in your package class:
+```php
+public function addRoutes(Container $c, Router $router): Router
+{
+    // other routes here....
+    $router->adminResource('some-entities', TestAdminController::class, $c);
+}
+```
+You can now browse to `/admin/some-entities` and perform CRUD actions.
+## api controller
+You can do the same to get an instant API. Here's an example for a Perdson class.
+Controller:
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Bone\App\Http\Controller\Api;
+
+use Bone\App\Service\PersonService;
+use Bone\Http\Controller\ApiController;
+
+class PersonController extends ApiController
+{
+    public function getServiceClass(): string
+    {
+        return PersonService::class;
+    }
+}
+```
+Service:
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Bone\App\Service;
+
+use Bone\App\Entity\Person;
+use Bone\BoneDoctrine\Service\RestService;
+
+class PersonService extends RestService
+{
+    public function getEntityClass(): string
+    {
+        return Person::class;
+    }
+}
+```
+Route:
+```php
+public function addRoutes(Container $c, Router $router): Router
+{
+    $router->apiResource('people', PersonController::class, $c);
+
+    return $router;
+}
+```
+You now have API REST endpoints at `/api/people`.
+
+You can see all configured routes using the `bone router:list` command.
