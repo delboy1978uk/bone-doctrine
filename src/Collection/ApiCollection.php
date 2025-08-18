@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bone\BoneDoctrine\Collection;
 
-use Bone\Contracts\Collection\ApiCollectionInterface;
+use Bone\Contracts\Contracts\Collection\ApiCollectionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Psr\Http\Message\UriInterface;
 
