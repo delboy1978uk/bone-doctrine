@@ -10,7 +10,7 @@
     ],
     "require": {
         "php": "^8.2",
-        "boneframework/contracts": "^1.3.2",
+        "boneframework/contracts": "^1.3.3",
         "delboy1978uk/barnacle": "^2.3",
         "delboy1978uk/bone-console": "^1.4",
         "delboy1978uk/form": "^v2.6",
