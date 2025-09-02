@@ -33,7 +33,7 @@
 
             foreach ($tableColumns as $column) {
                 $getter = 'get' . ucfirst($column);
-                $value = $record->$getter();
+                $value = \property_exists($record, $column) ? $record->$getter() : '';
 
                 if ($transformers[$column] !== null) {
                     $transformer = $transformers[$column];

@@ -261,7 +261,7 @@ abstract class AdminController
         $body = $this->view->render('admin::edit', [
             'form' => $form,
             'message' => $message,
-            'title' => $this->getTitle('update'),
+            'title' => $this->getTitle('edit'),
             'url' => $this->getUrl($request),
         ]);
 

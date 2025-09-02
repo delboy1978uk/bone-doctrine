@@ -1,7 +1,7 @@
 <?php
 /** @var string $title */
 /** @var string[] $tableColumns */
-/** @var array $record */
+/** @var object $record */
 /** @var array $transformers */
 /** @var array $prefixes */
 /** @var array $suffixes */
@@ -20,7 +20,7 @@
                 echo '<tr>';
                 echo '<td>' . $column . '</td>';
                 $getter = 'get' . ucfirst($column);
-                $value = $record->$getter();
+                $value = \property_exists($record, $column) ? $record->$getter() : '';
 
                 if ($transformers[$column] !== null) {
                     $transformer = $transformers[$column];

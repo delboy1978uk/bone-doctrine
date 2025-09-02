@@ -6,11 +6,12 @@
 /** @var array $prefixes */
 /** @var array $suffixes */
 /** @var string $url */
+/** @var string $form */
 ?>
 <div class="container">
     <h1><?= $title ?></h1>
     <div class="breadcrumbs">
-        <a href="<?= \preg_replace('#\/\d+$#', '', $url) ?>">Back</a>
+        <a href="<?= \preg_replace('#\/\d+\/delete$$#', '', $url) ?>">Back</a>
     </div>
     <table class="table table-condensed table-striped table-hover table-bordered">
         <thead></thead>
