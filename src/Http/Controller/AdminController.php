@@ -193,7 +193,7 @@ abstract class AdminController
     public function index(ServerRequestInterface $request): ResponseInterface
     {
         $params = $request->getQueryParams();
-        $limit = $params['limit'] ? (int) $params['limit']:  self::NUM_PER_PAGE;
+        $limit = isset($params['limit']) ? (int) $params['limit'] : self::NUM_PER_PAGE;
         $request = $request->withQueryParams($params);
         $url = $this->getUrl($request);
         $this->paginator->setUrl($url .'?page=:page&limit=:limit');
@@ -201,7 +201,7 @@ abstract class AdminController
         $records = $this->service->index($request);
         $total = $records->getTotalRecords();
         $params = $request->getQueryParams();
-        $page = array_key_exists('page', $params) ?(int) $params['page'] : 1;
+        $page = array_key_exists('page', $params) ? (int) $params['page'] : 1;
         $this->paginator->setCurrentPage($page);
         $this->paginator->setPageCountByTotalRecords($total, $limit);
 
@@ -223,7 +223,7 @@ abstract class AdminController
 
     public function view(ServerRequestInterface $request): ResponseInterface
     {
-        $body = $this->view->render('admin::view', [
+        $data = [
             'record' => $this->service->get($request),
             'tableColumns' => $this->getTableColumns('view'),
             'title' => $this->getTitle('view'),
@@ -231,7 +231,8 @@ abstract class AdminController
             'suffixes' => $this->getSuffixes(),
             'transformers' => $this->getTransformers(),
             'url' => $this->getUrl($request),
-        ]);
+        ];
+        $body = $this->view->render('admin::view', $data);
 
         return new HtmlResponse($body, 200, ['layout' => 'layouts::bone']);
     }
@@ -246,6 +247,7 @@ abstract class AdminController
         if ($request->getMethod() === 'POST') {
             $data = $request->getParsedBody();
             $form->populate($data);
+
             if ($form->isValid()) {
                 $entity->populate($form);
                 $this->entityManager->flush();
@@ -255,6 +257,7 @@ abstract class AdminController
 
                 return new RedirectResponse($url);
             }
+
             $message = $this->alertBox('There were errors with the form.', 'danger');
         }
 

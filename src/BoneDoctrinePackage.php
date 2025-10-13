@@ -72,6 +72,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $cachePool = new FilesystemAdapter('', 60, $cacheDir);
         $config = ORMSetup::createAttributeMetadataConfiguration($entityPaths, $isDevMode, $proxyDir, $cachePool);
         $config->setProxyNamespace('DoctrineProxies');
+        $config->enableNativeLazyObjects(true);
         $config->setQueryCache($cachePool);
         $connection = DriverManager::getConnection($credentials, $config);
         $entityManager = new EntityManager($connection, $config);

@@ -19,8 +19,8 @@ abstract class RestService implements RestServiceInterface
 {
     use Pagination;
 
-    private ObjectRepository $repository;
-    private FormInterface $form;
+    protected ObjectRepository $repository;
+    protected FormInterface $form;
 
     public function __construct(private EntityManagerInterface $entityManager)
     {
