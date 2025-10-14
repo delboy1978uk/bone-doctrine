@@ -57,17 +57,16 @@ class VendorFixturesCommand extends Command
 
         $choices = $io->choice('Pick the fixtures to install', $availableFixtures, multiSelect: true);
 
-        foreach ($choices as $fixtur) {
-            $instance = new $fixture();
+        foreach ($choices as $package) {
+            $instance = new $package();
 
             if ($instance instanceof FixtureProviderInterface) {
-                $io->writeln('   <info>Executing fixture ' . $fixture . '</info>');
+                $io->writeln('   <info>Executing fixtures for ' . $package . '</info>');
 
                 foreach ($instance->getFixtures() as $fixtureName) {
                     $fixture = new $fixtureName();
                     $loader->addFixture($fixture);
                 }
-
             }
         }
 
