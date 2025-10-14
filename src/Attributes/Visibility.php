@@ -7,7 +7,8 @@ namespace Bone\BoneDoctrine\Attributes;
 use Attribute;
 
 #[Attribute()]
-class Visibility {
+class Visibility
+{
     /**
      * rules can be
      *        | view | edit   |index |

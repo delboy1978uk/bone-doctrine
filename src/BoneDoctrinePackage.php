@@ -6,6 +6,7 @@ use Barnacle\Container;
 use Barnacle\Exception\NotFoundException;
 use Barnacle\RegistrationInterface;
 use Bone\BoneDoctrine\Command\LoadFixturesCommand;
+use Bone\BoneDoctrine\Command\VendorFixturesCommand;
 use Bone\Console\CommandRegistrationInterface;
 use Bone\Console\ConsoleApplication;
 use Bone\View\ViewRegistrationInterface;
@@ -121,6 +122,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $mappingDescribe = new MappingDescribeCommand($emProvider);
         $runDql = new RunDqlCommand($emProvider);
         $fixtures = new LoadFixturesCommand($em, $container->has('fixtures') ? $container->get('fixtures') : []);
+        $vendorFixtures = new VendorFixturesCommand($em, $container->has('vendorFixtures') ? $container->get('vendorFixtures') : []);
 
         $diff->setName('migrant:diff');
         $createDb->setName('migrant:create');
@@ -142,7 +144,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $proxy->setName('migrant:generate-proxies');
 
 
-        $commands = [$createDb, $dropDb, $diff, $dump, $exec, $gen, $info, $latest, $list, $mappingDescribe, $migrate, $rollup, $runDql, $status, $sync, $validate, $ver, $proxy, $fixtures];
+        $commands = [$createDb, $dropDb, $diff, $dump, $exec, $gen, $info, $latest, $list, $mappingDescribe, $migrate, $rollup, $runDql, $status, $sync, $validate, $ver, $proxy, $fixtures, $vendorFixtures];
 
         /** @var DoctrineCommand $command */
         foreach ($commands as $command) {
