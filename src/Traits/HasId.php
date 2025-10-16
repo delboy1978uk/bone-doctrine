@@ -13,9 +13,9 @@ trait HasId
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
     #[Visibility('index')]
-    private int $id;
+    private ?int $id = null;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

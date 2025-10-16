@@ -218,7 +218,7 @@ abstract class AdminController
             'paginator' => $this->paginator->render(),
         ]);
 
-        return new HtmlResponse($body, 200, ['layout' => 'layouts::bone']);
+        return new HtmlResponse($body, 200, ['layout' => 'layouts::admin']);
     }
 
     public function view(ServerRequestInterface $request): ResponseInterface
@@ -234,7 +234,7 @@ abstract class AdminController
         ];
         $body = $this->view->render('admin::view', $data);
 
-        return new HtmlResponse($body, 200, ['layout' => 'layouts::bone']);
+        return new HtmlResponse($body, 200, ['layout' => 'layouts::admin']);
     }
 
     public function edit(ServerRequestInterface $request): ResponseInterface
@@ -268,7 +268,7 @@ abstract class AdminController
             'url' => $this->getUrl($request),
         ]);
 
-        return new HtmlResponse($body, 200, ['layout' => 'layouts::bone']);
+        return new HtmlResponse($body, 200, ['layout' => 'layouts::admin']);
     }
 
     public function create(ServerRequestInterface $request): ResponseInterface
@@ -301,7 +301,7 @@ abstract class AdminController
             'url' => $this->getUrl($request),
         ]);
 
-        return new HtmlResponse($body, 200, ['layout' => 'layouts::bone']);
+        return new HtmlResponse($body, 200, ['layout' => 'layouts::admin']);
     }
 
     public function delete(ServerRequestInterface $request): ResponseInterface
@@ -330,7 +330,7 @@ abstract class AdminController
             'form' => $form->render(),
         ]);
 
-        return new HtmlResponse($body, 200, ['layout' => 'layouts::bone']);
+        return new HtmlResponse($body, 200, ['layout' => 'layouts::admin']);
     }
 
     abstract public function getEntityClass(): string;
