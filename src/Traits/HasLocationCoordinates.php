@@ -13,19 +13,19 @@ trait HasLocationCoordinates
     #[ORM\Column(type: 'float', precision: 17, scale: 15, nullable: true)]
     #[Field('float')]
     #[Visibility('noindex')]
-    private float $longitude = 0.0;
+    private ?float $longitude = 0.0;
 
     #[ORM\Column(type: 'float', precision: 17, scale: 15, nullable: true)]
     #[Field('float')]
     #[Visibility('noindex')]
-    private float $latitude = 0.0;
+    private ?float $latitude = 0.0;
 
     public function getLongitude(): float
     {
         return $this->longitude;
     }
 
-    public function setLongitude(float $longitude): void
+    public function setLongitude(?float $longitude): void
     {
         $this->longitude = $longitude;
     }
@@ -35,7 +35,7 @@ trait HasLocationCoordinates
         return $this->latitude;
     }
 
-    public function setLatitude(float $latitude): void
+    public function setLatitude(?float $latitude): void
     {
         $this->latitude = $latitude;
     }
