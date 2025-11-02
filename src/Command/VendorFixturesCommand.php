@@ -22,7 +22,7 @@ class VendorFixturesCommand extends Command
 
     public function __construct(EntityManager $entityManager, array $fixtures = [])
     {
-        parent::__construct('migrant:vendor-fxtures');
+        parent::__construct('migrant:vendor-fixtures');
         $this->entityManager = $entityManager;
         $this->fixtures = $fixtures;
     }
@@ -32,6 +32,7 @@ class VendorFixturesCommand extends Command
         $this->setDescription('[vendor-fixtures] Loads vendor package fixtures.');
         $this->setHelp('Loads data fixtures.');
         $this->addArgument('purge', InputArgument::OPTIONAL, 'Purge the database before seeding', false);
+        $this->addOption('package', 'p', InputOption::VALUE_REQUIRED, 'Load fixtures for a specific vendor package', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -55,7 +56,13 @@ class VendorFixturesCommand extends Command
             $availableFixtures[] = $fixture;
         }
 
-        $choices = $io->choice('Pick the fixtures to install', $availableFixtures, multiSelect: true);
+        $package = $input->getOption('package');
+
+        if ($package) {
+            $choices = [$package];
+        } else {
+            $choices = $io->choice('Pick the fixtures to install', $availableFixtures, multiSelect: true);
+        }
 
         foreach ($choices as $package) {
             $instance = new $package();
