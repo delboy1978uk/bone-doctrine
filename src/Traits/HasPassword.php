@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait HasPassword
 {
     #[ORM\Column()]
-    #[Field('string|required')]
+    #[Field('password|required')]
     #[Visibility('noindex')]
     private string $password = '';
 
