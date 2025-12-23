@@ -22,8 +22,9 @@ abstract class RestService implements RestServiceInterface
     protected ObjectRepository $repository;
     protected FormInterface $form;
 
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        protected EntityManagerInterface $entityManager
+    ) {
         $class = $this->getEntityClass();
         $this->repository = $entityManager->getRepository($class);
         $factory = new FormFactory();
