@@ -12,12 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait HasStartStopTimes
 {
-    #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(type: 'datetime')]
     #[Visibility('index,view')]
     #[Cast(transformer: new DateTimeTransformer('D d M Y H:i'))]
     private DateTimeInterface $startedAt;
 
-    #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(type: 'datetime')]
     #[Visibility('index,view')]
     #[Cast(transformer: new DateTimeTransformer('D d M Y H:i'))]
     private DateTimeInterface $stoppedAt;
