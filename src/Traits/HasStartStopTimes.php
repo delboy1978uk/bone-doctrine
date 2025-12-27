@@ -15,14 +15,14 @@ trait HasStartStopTimes
     #[ORM\Column(type: 'datetime', nullable: true)]
     #[Visibility('index,view')]
     #[Cast(transformer: new DateTimeTransformer('D d M Y H:i'))]
-    private DateTimeInterface $startedAt;
+    private ?DateTimeInterface $startedAt = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     #[Visibility('index,view')]
     #[Cast(transformer: new DateTimeTransformer('D d M Y H:i'))]
-    private DateTimeInterface $stoppedAt;
+    private ?DateTimeInterface $stoppedAt = null;
 
-    public function getStartedAt(): DateTimeInterface
+    public function getStartedAt(): ?DateTimeInterface
     {
         return $this->startedAt;
     }
@@ -32,7 +32,7 @@ trait HasStartStopTimes
         $this->startedAt = $startedAt;
     }
 
-    public function getStoppedAt(): DateTimeInterface
+    public function getStoppedAt(): ?DateTimeInterface
     {
         return $this->stoppedAt;
     }
