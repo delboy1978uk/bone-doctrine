@@ -13,6 +13,7 @@ use Bone\View\ViewRegistrationInterface;
 use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Schema\AbstractAsset;
 use Doctrine\Migrations\Configuration\Configuration;
 use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
 use Doctrine\Migrations\Configuration\Migration\ExistingConfiguration;
@@ -45,6 +46,9 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationInterface, ViewRegistrationInterface
 {
+    /** Doctrine Migrations' metadata table */
+    public const MIGRATIONS_TABLE = 'Migration';
+
     public function addToContainer(Container $c)
     {
         /** @var EntityManager $em */
@@ -75,6 +79,13 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $config->setProxyNamespace('DoctrineProxies');
         $config->enableNativeLazyObjects(true);
         $config->setQueryCache($cachePool);
+        // the migrations table is not an entity: hide it from the schema tool, or migrant:validate wants to drop it
+        $filter = $config->getSchemaAssetsFilter();
+        $config->setSchemaAssetsFilter(static function (string|AbstractAsset $asset) use ($filter): bool {
+            $name = $asset instanceof AbstractAsset ? $asset->getName() : $asset;
+
+            return $name !== self::MIGRATIONS_TABLE && $filter($asset);
+        });
         $connection = DriverManager::getConnection($credentials, $config);
         $entityManager = new EntityManager($connection, $config);
 
@@ -93,7 +104,7 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $app = $container->get(ConsoleApplication::class);
         $migrationsDir = 'data/migrations';
         $meta = new TableMetadataStorageConfiguration();
-        $meta->setTableName('Migration');
+        $meta->setTableName(self::MIGRATIONS_TABLE);
         $configuration = new Configuration();
         $configuration->addMigrationsDirectory('Migrations', $migrationsDir);
         $configuration->setMetadataStorageConfiguration($meta);

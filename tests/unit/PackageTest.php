@@ -9,6 +9,7 @@ use Bone\Console\ConsoleApplication;
 use Bone\Console\ConsolePackage;
 use Bone\Db\DbPackage;
 use Codeception\Test\Unit;
+use Doctrine\DBAL\Schema\Table;
 use Doctrine\ORM\EntityManager;
 
 class PackageTest extends Unit
@@ -35,6 +36,29 @@ class PackageTest extends Unit
         $this->assertTrue($container->has(EntityManager::class));
         $this->assertInstanceOf(EntityManager::class, $container->get(EntityManager::class));
         $this->assertIsArray($package->registerConsoleCommands($container));
+    }
+
+    public function testMigrationsTableIsHiddenFromTheSchemaTool()
+    {
+        $container = new Container();
+        $container['cache_dir'] = './tests/data';
+        $container['proxy_dir'] = './tests/data';
+        $container['entity_paths'] = ['./tests/data'];
+        $container['db'] = [
+            'driver' => 'pdo_mysql',
+            'host' => '127.0.0.1',
+            'dbname' => 'awesome',
+            'user' => 'root',
+            'password' => 'root'
+        ];
+        $package = new BoneDoctrinePackage();
+        $package->addToContainer($container);
+        $filter = $container->get(EntityManager::class)->getConnection()->getConfiguration()->getSchemaAssetsFilter();
+
+        $this->assertFalse($filter(BoneDoctrinePackage::MIGRATIONS_TABLE));
+        $this->assertFalse($filter(new Table(BoneDoctrinePackage::MIGRATIONS_TABLE)));
+        $this->assertTrue($filter('Ticket'));
+        $this->assertTrue($filter(new Table('Ticket')));
     }
 
     public function testPackageMissingProxyDir()
