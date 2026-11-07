@@ -9,7 +9,6 @@ use Bone\Console\ConsoleApplication;
 use Bone\Console\ConsolePackage;
 use Bone\Db\DbPackage;
 use Codeception\Test\Unit;
-use Doctrine\DBAL\Schema\Table;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
@@ -75,27 +74,20 @@ class PackageTest extends Unit
         return $container->get(EntityManager::class)->getConfiguration()->getMetadataCache();
     }
 
-    public function testMigrationsTableIsHiddenFromTheSchemaTool()
+    public function testMigrationsCanSeeTheirTable()
     {
         $container = new Container();
         $container['cache_dir'] = './tests/data';
         $container['proxy_dir'] = './tests/data';
         $container['entity_paths'] = ['./tests/data'];
-        $container['db'] = [
-            'driver' => 'pdo_mysql',
-            'host' => '127.0.0.1',
-            'dbname' => 'awesome',
-            'user' => 'root',
-            'password' => 'root'
-        ];
+        $container['db'] = ['driver' => 'pdo_sqlite', 'memory' => true];
         $package = new BoneDoctrinePackage();
         $package->addToContainer($container);
-        $filter = $container->get(EntityManager::class)->getConnection()->getConfiguration()->getSchemaAssetsFilter();
+        $connection = $container->get(EntityManager::class)->getConnection();
+        $connection->executeStatement('CREATE TABLE ' . BoneDoctrinePackage::MIGRATIONS_TABLE . ' (version VARCHAR(191) NOT NULL)');
 
-        $this->assertFalse($filter(BoneDoctrinePackage::MIGRATIONS_TABLE));
-        $this->assertFalse($filter(new Table(BoneDoctrinePackage::MIGRATIONS_TABLE)));
-        $this->assertTrue($filter('Ticket'));
-        $this->assertTrue($filter(new Table('Ticket')));
+        // Doctrine Migrations checks for its table like this; hidden, it tries to create it again on every migrate
+        $this->assertTrue($connection->createSchemaManager()->tablesExist([BoneDoctrinePackage::MIGRATIONS_TABLE]));
     }
 
     public function testPackageMissingProxyDir()

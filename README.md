@@ -80,7 +80,7 @@ Then check the database matches your entities:
 vendor/bin/bone migrant:validate
 ```
 Migrations records what it has run in a table called `Migration` (`BoneDoctrinePackage::MIGRATIONS_TABLE`). It isn't an
-entity, so the package hides it from the schema tool: `migrant:validate` and `migrant:diff` never ask to drop it.
+entity, so `migrant:validate` ignores it (and `migrant:diff` never asks to drop it).
 https://github.com/delboy1978uk/user is a typical example, look in the entity folder to learn more.
 See Doctrine Fixtures documentation for more details.
 ## fixtures

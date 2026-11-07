@@ -6,6 +6,7 @@ use Barnacle\Container;
 use Barnacle\Exception\NotFoundException;
 use Barnacle\RegistrationInterface;
 use Bone\BoneDoctrine\Command\LoadFixturesCommand;
+use Bone\BoneDoctrine\Command\ValidateSchemaCommand;
 use Bone\BoneDoctrine\Command\VendorFixturesCommand;
 use Bone\Console\CommandRegistrationInterface;
 use Bone\Console\ConsoleApplication;
@@ -13,7 +14,6 @@ use Bone\View\ViewRegistrationInterface;
 use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Schema\AbstractAsset;
 use Doctrine\Migrations\Configuration\Configuration;
 use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
 use Doctrine\Migrations\Configuration\Migration\ExistingConfiguration;
@@ -40,7 +40,6 @@ use Doctrine\ORM\Tools\Console\Command\MappingDescribeCommand;
 use Doctrine\ORM\Tools\Console\Command\RunDqlCommand;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand;
-use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
@@ -81,13 +80,6 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $config->setProxyNamespace('DoctrineProxies');
         $config->enableNativeLazyObjects(true);
         $config->setQueryCache($cachePool);
-        // the migrations table is not an entity: hide it from the schema tool, or migrant:validate wants to drop it
-        $filter = $config->getSchemaAssetsFilter();
-        $config->setSchemaAssetsFilter(static function (string|AbstractAsset $asset) use ($filter): bool {
-            $name = $asset instanceof AbstractAsset ? $asset->getName() : $asset;
-
-            return $name !== self::MIGRATIONS_TABLE && $filter($asset);
-        });
         $connection = DriverManager::getConnection($credentials, $config);
         $entityManager = new EntityManager($connection, $config);
 
