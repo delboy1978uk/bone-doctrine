@@ -42,6 +42,7 @@ use Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand;
 use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationInterface, ViewRegistrationInterface
@@ -74,7 +75,8 @@ class BoneDoctrinePackage implements RegistrationInterface, CommandRegistrationI
         $proxyDir =$c->get('proxy_dir');
         $cacheDir = $c->get('cache_dir');
         $isDevMode = $c->has('devMode') ? $c->get('devMode') : false;
-        $cachePool = new FilesystemAdapter('', 60, $cacheDir);
+        // dev mode caches in memory for one request, so entity changes are seen at once
+        $cachePool = $isDevMode ? new ArrayAdapter() : new FilesystemAdapter('', 60, $cacheDir);
         $config = ORMSetup::createAttributeMetadataConfiguration($entityPaths, $isDevMode, $proxyDir, $cachePool);
         $config->setProxyNamespace('DoctrineProxies');
         $config->enableNativeLazyObjects(true);

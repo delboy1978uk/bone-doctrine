@@ -50,6 +50,15 @@ return [
     'entity_paths' => [],
 ];
 ```
+Doctrine caches entity metadata and parsed DQL in `cache_dir`. In development, set `devMode` (e.g. in
+`config/development/`) so the cache lives in memory for one request instead, and entity changes are seen at once:
+```php
+<?php
+
+return [
+    'devMode' => true,
+];
+```
 ## entity manager
 You can fetch and inject the `Doctrine\ORM\EntityManager` into your classes inside the package registration class:
 ```php

@@ -11,6 +11,8 @@ use Bone\Db\DbPackage;
 use Codeception\Test\Unit;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class PackageTest extends Unit
 {
@@ -36,6 +38,41 @@ class PackageTest extends Unit
         $this->assertTrue($container->has(EntityManager::class));
         $this->assertInstanceOf(EntityManager::class, $container->get(EntityManager::class));
         $this->assertIsArray($package->registerConsoleCommands($container));
+    }
+
+    public function testDevModeCachesInMemory()
+    {
+        $this->assertInstanceOf(ArrayAdapter::class, $this->metadataCache(true));
+    }
+
+    public function testWithoutDevModeCachesOnDisk()
+    {
+        $this->assertInstanceOf(FilesystemAdapter::class, $this->metadataCache(false));
+        $this->assertInstanceOf(FilesystemAdapter::class, $this->metadataCache(null));
+    }
+
+    private function metadataCache(?bool $devMode): object
+    {
+        $container = new Container();
+        $container['cache_dir'] = './tests/data';
+        $container['proxy_dir'] = './tests/data';
+        $container['entity_paths'] = ['./tests/data'];
+        $container['db'] = [
+            'driver' => 'pdo_mysql',
+            'host' => '127.0.0.1',
+            'dbname' => 'awesome',
+            'user' => 'root',
+            'password' => 'root'
+        ];
+
+        if ($devMode !== null) {
+            $container['devMode'] = $devMode;
+        }
+
+        $package = new BoneDoctrinePackage();
+        $package->addToContainer($container);
+
+        return $container->get(EntityManager::class)->getConfiguration()->getMetadataCache();
     }
 
     public function testMigrationsTableIsHiddenFromTheSchemaTool()
